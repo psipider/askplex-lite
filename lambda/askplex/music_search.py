@@ -131,6 +131,14 @@ class MusicSearch:
         self.playlist.clear_playlist()
         self.plex.add_plex_tracks(plex_track_list)
 
+        play_mode = get_slot_value_v2(self.handler_input, 'mode')
+        if play_mode is not None:
+            self.logger.debug('Mode set to: ' + play_mode.value)
+            play_mode = self.text._normalize(play_mode.value)
+            if play_mode == 'shuffle':
+                self.playlist.shuffle_play_order(True)
+                self.logger.info('Shuffle mode set')
+
         playlist_name = data[prompts.PMS_PLNAME_MUSIC_BY_ARTIST].format(artist.value)
         self.plex.set_playlist_name(playlist_name)
         speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
@@ -304,6 +312,14 @@ class MusicSearch:
 
         self.playlist.clear_playlist()
         self.plex.add_plex_tracks(plex_track_list)
+
+        play_mode = get_slot_value_v2(self.handler_input, 'mode')
+        if play_mode is not None:
+            self.logger.debug('Mode set to: ' + play_mode.value)
+            play_mode = self.text._normalize(play_mode.value)
+            if play_mode == 'shuffle':
+                self.playlist.shuffle_play_order(True)
+                self.logger.info('Shuffle mode set')
 
         playlist_name = data[prompts.PMS_PLNAME_MUSIC_BY_GENRE].format(genre_query)
         self.plex.set_playlist_name(playlist_name)
