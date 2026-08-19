@@ -223,12 +223,17 @@ class Controller:
         playlist_index = int(play_order[index])
         playlist_len = len(playback_info["playlist"])
 
-        play_order = [l for l in range(0, playlist_len)]
+        has_started = playback_info.get("has_started", False)
+
+        play_order = list(range(playlist_len))
 
         if shuffle:
-            play_order.pop(index)
-            random.shuffle(play_order)
-            play_order.insert(0, index)
+            if has_started:
+                play_order.remove(playlist_index)
+                random.shuffle(play_order)
+                play_order.insert(0, playlist_index)
+            else:
+                random.shuffle(play_order)
             index = 0
         else:
             index = playlist_index
@@ -935,7 +940,7 @@ class Controller:
 
         if plex_track_list is None:
             speak_output = data[prompts.PMS_ALBUM_SEARCH_EMPTY].format(album=album_query, artist=artist_query)
-            self.logger.error(exception)
+            self.logger.error("Unable to locate requested album - Artist: {artist_result}, Album: {album_query}")
             return self._build_speak_ask_response(speak_output)
 
         self.clear_playlist()
@@ -1040,6 +1045,14 @@ class Controller:
 
         self.clear_playlist()
         self.add_plex_tracks(plex_track_list)
+        
+        play_mode = get_slot_value_v2(self.handler_input, 'mode')
+        if play_mode is not None:
+            self.logger.debug('Mode set to: ' + play_mode.value)
+            play_mode = self._normalize(play_mode.value)
+            if play_mode == 'shuffle':
+                self.shuffle_play_order(True)
+                self.logger.info('Shuffle mode set')
 
         playlist_name = data[prompts.PMS_PLNAME_PLAYLIST].format(playlist_query)
         self.set_playlist_name(playlist_name)
