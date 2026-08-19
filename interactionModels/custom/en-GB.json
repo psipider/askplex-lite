@@ -1,0 +1,302 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "PlaybackSongDetails",
+          "samples": [
+            "What is playing",
+            "What song is this",
+            "What is playing right now",
+            "What is the name of this song",
+            "What is the name of the song",
+            "What is the name of the song that is playing",
+            "What is this",
+            "What is playing",
+            "Who is this song by",
+            "Who is the song by",
+            "Who is singing this",
+            "Who is singing"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "PlayRandomMusic",
+          "samples": [
+            "Play some music",
+            "Play random music",
+            "Play random songs",
+            "Play random tracks"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayMusicByArtist",
+          "samples": [
+            "Play songs by {artist}",
+            "Play music by {artist}",
+            "Play {artist}",
+            "Play the artist {artist}",
+            "Play the singer {artist}",
+            "Play the band {artist}",
+            "Play songs by artist {artist}",
+            "Play songs by singer {artist}",
+            "Play songs by band {artist}",
+            "Play songs by the artist {artist}",
+            "Play songs by the singer {artist}",
+            "Play songs by the band {artist}",
+            "Play music by artist {artist}",
+            "Play music by singer {artist}",
+            "Play music by band {artist}",
+            "Play music by the artist {artist}",
+            "Play music by the singer {artist}",
+            "Play music by the band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlaySongByArtist",
+          "samples": [
+            "Play {song} by {artist}",
+            "Play the song {song} by {artist}",
+            "Play the song {song} by artist {artist}",
+            "Play the song {song} by singer {artist}",
+            "Play the song {song} by band {artist}",
+            "Play the song {song} by the {artist}",
+            "Play the song {song} by the artist {artist}",
+            "Play the song {song} by the singer {artist}",
+            "Play the song {song} by the band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "album",
+              "type": "AMAZON.MusicAlbum"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayAlbumByArtist",
+          "samples": [
+            "Play album {album} by {artist}",
+            "Play the album {album} by {artist}",
+            "Play the album {album} by artist {artist}",
+            "Play the album {album} by singer {artist}",
+            "Play the album {album} by band {artist}",
+            "Play the album {album} by the {artist}",
+            "Play the album {album} by the artist {artist}",
+            "Play the album {album} by the singer {artist}",
+            "Play the album {album} by the band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "genre",
+              "type": "AMAZON.Genre"
+            }
+          ],
+          "name": "PlayMusicByGenre",
+          "samples": [
+            "Genre {genre}",
+            "Music {genre}",
+            "Music from the genre {genre}",
+            "Play songs from the genre {genre}",
+            "Play genre {genre}",
+            "Play music {genre}",
+            "Play music from the genre {genre}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "playlist",
+              "type": "playlist_names"
+            },
+            {
+              "name": "mode",
+              "type": "play_mode"
+            }
+          ],
+          "name": "PlayPlaylist",
+          "samples": [
+            "{mode} the playlist {playlist}",
+            "{mode} playlist {playlist}"
+          ]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "love songs"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "movie scores",
+                  "movie themes",
+                  "movie music",
+                  "film scores"
+                ],
+                "value": "film music"
+              }
+            },
+            {
+              "name": {
+                "value": "dance music"
+              }
+            },
+            {
+              "name": {
+                "value": "party 2025"
+              }
+            },
+            {
+              "name": {
+                "value": "top 10"
+              }
+            },
+            {
+              "name": {
+                "value": "top 40"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "summer2026",
+                  "summer26",
+                  "summer 2026"
+                ],
+                "value": "summer 26"
+              }
+            }
+          ],
+          "name": "playlist_names"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "play"
+              }
+            },
+            {
+              "name": {
+                "value": "shuffle"
+              }
+            }
+          ],
+          "name": "play_mode"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "Rolling Stones"
+                ],
+                "value": "The Rolling Stones"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "Beatles"
+                ],
+                "value": "The Beatles"
+              }
+            }
+          ],
+          "name": "AMAZON.Artist"
+        }
+      ],
+      "invocationName": "plex hub"
+    }
+  }
+}

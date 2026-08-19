@@ -9,7 +9,7 @@
             "alexaUsage": [
               "custom/default"
             ],
-            "runtime": "python3.9",
+            "runtime": "python3.14",
             "handler": "askplex.handler"
           }
         ]

@@ -2,7 +2,7 @@
 import logging
 
 SKILL_LOG_LEVEL=logging.DEBUG
-SKILL_INVOCATION_NAME = "plex amp"
+SKILL_INVOCATION_NAME = "plex hub"
 
 # Plex Media Server config
 PMS_SERVER_URL = 'https://'
