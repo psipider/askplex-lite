@@ -92,26 +92,30 @@
             {
               "name": "artist",
               "type": "AMAZON.Artist"
+            },
+            {
+              "name": "mode",
+              "type": "play_mode"
             }
           ],
           "name": "PlayMusicByArtist",
           "samples": [
-            "Play {artist}",
-            "Play the artist {artist}",
-            "Play the singer {artist}",
-            "Play the band {artist}",
-            "Play songs by artist {artist}",
-            "Play songs by singer {artist}",
-            "Play songs by band {artist}",
-            "Play songs by the artist {artist}",
-            "Play songs by the singer {artist}",
-            "Play songs by the band {artist}",
-            "Play music by artist {artist}",
-            "Play music by singer {artist}",
-            "Play music by band {artist}",
-            "Play music by the artist {artist}",
-            "Play music by the singer {artist}",
-            "Play music by the band {artist}"
+            "{mode} {artist}",
+            "{mode} the artist {artist}",
+            "{mode} the singer {artist}",
+            "{mode} the band {artist}",
+            "{mode} songs by artist {artist}",
+            "{mode} songs by singer {artist}",
+            "{mode} songs by band {artist}",
+            "{mode} songs by the artist {artist}",
+            "{mode} songs by the singer {artist}",
+            "{mode} songs by the band {artist}",
+            "{mode} music by artist {artist}",
+            "{mode} music by singer {artist}",
+            "{mode} music by band {artist}",
+            "{mode} music by the artist {artist}",
+            "{mode} music by the singer {artist}",
+            "{mode} music by the band {artist}"
           ]
         },
         {
@@ -169,17 +173,19 @@
             {
               "name": "genre",
               "type": "AMAZON.Genre"
+            },
+            {
+              "name": "mode",
+              "type": "play_mode"
             }
           ],
           "name": "PlayMusicByGenre",
           "samples": [
-            "Genre {genre}",
-            "Music {genre}",
-            "Music from the genre {genre}",
-            "Play songs from the genre {genre}",
-            "Play genre {genre}",
-            "Play music {genre}",
-            "Play music from the genre {genre}"
+            "{mode} songs from the genre {genre}",
+            "{mode} genre {genre}",
+            "{mode} music {genre}",
+            "{mode} music from the genre {genre}",
+            "{mode} music from the {genre} genre"
           ]
         },
         {
