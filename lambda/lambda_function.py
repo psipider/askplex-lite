@@ -9,6 +9,7 @@ from ask_sdk_model.interfaces.audioplayer import PlayerActivity
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.utils import is_request_type, is_intent_name
 from ask_sdk_core.skill_builder import CustomSkillBuilder
+from ask_sdk_core.api_client import DefaultApiClient
 
 from ask_sdk_model import Response
 from ask_sdk_dynamodb.adapter import DynamoDbAdapter
@@ -775,6 +776,25 @@ class PlayPlaylistHandler(AbstractRequestHandler):
             return response
         return player_controller.play_playlist()
 
+class PlaySimlarSongsHandler(AbstractRequestHandler):
+    """
+    Handler for the 'PlaySimilarSongs' intent.
+    Returns:
+        Response: The response object containing the result of the playback action.
+    """
+
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return is_intent_name('PlaySimilarSongs')(handler_input)
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        logger.debug('In PlaySimilarSongsHandler()')
+        player_controller = controller.Controller(logger, handler_input)
+        result, response = player_controller.connect_plex()
+        if not result:
+            return response
+        return player_controller.play_similar_songs()
 
 #
 # Exception Handers
@@ -916,9 +936,8 @@ class SavePersistenceAttributesResponseInterceptor(AbstractResponseInterceptor):
         # type: (HandlerInput, Response) -> None
         handler_input.attributes_manager.save_persistent_attributes()
 
-
-# Create custom skill
-sb = CustomSkillBuilder(persistence_adapter = dynamodb_adapter)
+# CustomSkillBuilder is required to inject the API client necessary for progressive responses
+sb = CustomSkillBuilder(api_client=DefaultApiClient(), persistence_adapter=dynamodb_adapter)
 # Register Intent Handlers
 sb.add_request_handler(CheckAudioInterfaceHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
@@ -947,6 +966,7 @@ sb.add_request_handler(PlayAlbumByArtistHandler())
 sb.add_request_handler(PlaySongByArtistHandler())
 sb.add_request_handler(PlayMusicByGenreHandler())
 sb.add_request_handler(PlayPlaylistHandler())
+sb.add_request_handler(PlaySimlarSongsHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 # Register Interceptors
 sb.add_global_request_interceptor(LocalizationInterceptor())

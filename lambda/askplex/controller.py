@@ -10,6 +10,7 @@ from .playback_controller import PlaybackController
 from .playback_events import PlaybackEvents
 from .plex_connector import PlexConnector
 from .music_search import MusicSearch
+from .plexapi_utils import PlexApiUtils
 from .text_utils import TextUtils
 
 from plexapi.audio import Track
@@ -39,7 +40,8 @@ class Controller:
         self.playback_events = PlaybackEvents(logger, handler_input, self.playlist_manager, self.playback_controller)
         self.plex_connector = PlexConnector(logger, handler_input, self.playlist_manager)
         self.text_utils = TextUtils(logger, handler_input)
-        self.music_search = MusicSearch(logger, handler_input, self.playlist_manager, self.playback_controller, self.plex_connector, self.text_utils)
+        self.plexapi_utils = PlexApiUtils(logger, self.text_utils)
+        self.music_search = MusicSearch(logger, handler_input, self.playlist_manager, self.playback_controller, self.plex_connector, self.text_utils, self.plexapi_utils)
 
     # Playlist methods - delegated to PlaylistManager
     def add_track(self, track: Dict, playback_info: Dict) -> None:
@@ -135,6 +137,9 @@ class Controller:
 
     def play_playlist(self) -> Response:
         return self.music_search.play_playlist()
+
+    def play_similar_songs(self) -> Response:
+        return self.music_search.play_similar_songs()
 
     # Text utility methods - delegated to TextUtils
     def _normalize(self, source: str) -> str:

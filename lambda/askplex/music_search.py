@@ -1,18 +1,20 @@
+import time
 from typing import Optional
 from logging import Logger
 
 from ask_sdk_model import Response
 
-from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.utils import get_slot_value_v2
+from ask_sdk_core.handler_input import HandlerInput
 
 from . import config
 from . import prompts
-from . import plexapi_utils
+
 from .playlist_manager import PlaylistManager
 from .playback_controller import PlaybackController
 from .plex_connector import PlexConnector
 from .text_utils import TextUtils
+from .plexapi_utils import PlexApiUtils
 
 
 class MusicSearch:
@@ -21,8 +23,8 @@ class MusicSearch:
     song/album/genre search, and playlist playback.
     """
 
-    def __init__(self, logger: Logger, handler_input: HandlerInput, playlist_manager: PlaylistManager, 
-                 playback_controller: PlaybackController, plex_connector: PlexConnector, text_utils: TextUtils) -> None:
+    def __init__(self, logger: Logger, handler_input: HandlerInput, playlist_manager: PlaylistManager,
+                 playback_controller: PlaybackController, plex_connector: PlexConnector, text_utils: TextUtils, plexapi_utils: PlexApiUtils) -> None:
         """
         Initializes the music search handler with logger, handler input, and required managers.
         Args:
@@ -39,6 +41,7 @@ class MusicSearch:
         self.playback = playback_controller
         self.plex = plex_connector
         self.text = text_utils
+        self.plexapi = plexapi_utils
 
     def play_random_music(self) -> Response:
         """
@@ -57,7 +60,7 @@ class MusicSearch:
 
         # Search for random tracks
         try:
-            plex_track_list = plexapi_utils.get_random_tracks(PlexConnector._section, config.PMS_DEFAULT_MAX_RESULTS)
+            plex_track_list = self.plexapi.get_random_tracks(PlexConnector._section, config.PMS_DEFAULT_MAX_RESULTS)
         except Exception as exception:
             speak_output = data[prompts.PMS_CONNECTION_ERROR]
             self.logger.error(exception)
@@ -104,10 +107,9 @@ class MusicSearch:
             return self.plex._build_speak_ask_response(speak_output)
         
         artist_query = self.text._normalize(artist.value)
-
         # Search for the artist
         try:
-            artist_result = plexapi_utils.get_artist(PlexConnector._section, artist_query)
+            artist_result = self.plexapi.get_artist(PlexConnector._section, artist_query)
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist_query)
             self.logger.error(exception)
@@ -122,7 +124,7 @@ class MusicSearch:
         plex_track_list = artist_result.popularTracks()
         if len(plex_track_list) == 0:
             # No popular tracks, so look for any tracks
-            plex_track_list = plexapi_utils.get_random_tracks_by_artist(PlexConnector._section, config.PMS_DEFAULT_MAX_RESULTS, artist_result)
+            plex_track_list = self.plexapi.get_random_tracks_by_artist(PlexConnector._section, config.PMS_DEFAULT_MAX_RESULTS, artist_result)
             if len(plex_track_list) == 0:
                 speak_output = data[prompts.PMS_TRACKS_SEARCH_EMPTY]
                 return self.plex._build_speak_ask_response(speak_output)
@@ -165,6 +167,7 @@ class MusicSearch:
         # Get variable(s) from intent
         artist = get_slot_value_v2(self.handler_input, 'artist')
         song = get_slot_value_v2(self.handler_input, 'song')
+        self.logger.debug(f"Artist: {artist}, Song: {song}")
         if artist is None or song is None:
             speak_output = data[prompts.SKILL_INTENT_SLOTS_MISSING]
             self.logger.error(speak_output)
@@ -174,8 +177,9 @@ class MusicSearch:
         song_query = self.text._normalize(song.value)
 
         # Search for the artist
+        timer = time.time()
         try:
-            artist_result = plexapi_utils.get_artist(PlexConnector._section, artist_query)
+            artist_result = self.plexapi.get_artist(PlexConnector._section, artist_query)
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist_query)
             self.logger.error(exception)
@@ -186,23 +190,22 @@ class MusicSearch:
             self.logger.error(speak_output)
             return self.plex._build_speak_ask_response(speak_output)
 
-        # Search for the song
-        try:
-            plex_track = plexapi_utils.get_track(artist_result, song_query)
-        except Exception as exception:
-            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song_query, artist=artist_query)
-            self.logger.error(exception)
-            return self.plex._build_speak_ask_response(speak_output)
+        self.logger.debug("Artist found in " + str(time.time() - timer) + " seconds")
 
+        timer = time.time()
+        # Search for the song
+        plex_track = self.plexapi.get_track_by_artist(artist_result, song_query)
         if plex_track is None:
-            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song_query, artist=artist_query)
+            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song_query, artist=artist_result.title)
             self.logger.error(speak_output)
             return self.plex._build_speak_ask_response(speak_output)
+
+        self.logger.debug("Song found in " + str(time.time() - timer) + " seconds")
 
         self.playlist.clear_playlist()
         self.plex.add_plex_track(plex_track)
 
-        playlist_name = data[prompts.PMS_PLNAME_SONG].format(song=song_query, artist=artist_query)
+        playlist_name = data[prompts.PMS_PLNAME_SONG].format(song=plex_track.title, artist=artist_result.title)
         self.plex.set_playlist_name(playlist_name)
         speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
 
@@ -238,7 +241,7 @@ class MusicSearch:
 
         # Search for the artist
         try:
-            artist_result = plexapi_utils.get_artist(PlexConnector._section, artist_query)
+            artist_result = self.plexapi.get_artist(PlexConnector._section, artist_query)
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist_query)
             self.logger.error(exception)
@@ -251,7 +254,7 @@ class MusicSearch:
 
         # Search for the album
         try:
-            plex_track_list = plexapi_utils.get_album(artist_result, album_query)
+            plex_track_list = self.plexapi.get_album(artist_result, album_query)
         except Exception as exception:
             speak_output = data[prompts.PMS_ALBUM_SEARCH_ERROR].format(album_query, artist=artist_query)
             self.logger.error(exception)
@@ -299,7 +302,7 @@ class MusicSearch:
 
         # Search for the style (Plex server is more specfic with style than genre tags)
         try:
-            plex_track_list = plexapi_utils.get_random_tracks_by_genre(PlexConnector._section, config.PMS_DEFAULT_MAX_RESULTS, genre_query)
+            plex_track_list = self.plexapi.get_random_tracks_by_genre(PlexConnector._section, config.PMS_DEFAULT_MAX_RESULTS, genre_query)
         except Exception as exception:
             speak_output = data[prompts.PMS_GENRE_SEARCH_ERROR].format(genre_query)
             self.logger.error(exception)
@@ -355,7 +358,7 @@ class MusicSearch:
 
         # Search for the playlist
         try:
-            plex_track_list = plexapi_utils.get_playlist(PlexConnector._section._server, playlist_query)
+            plex_track_list = self.plexapi.get_playlist(PlexConnector._section._server, playlist_query)
         except Exception as exception:
             speak_output = data[prompts.PMS_PLAYLIST_SEARCH_ERROR].format(playlist_query)
             self.logger.error(exception)
@@ -383,4 +386,69 @@ class MusicSearch:
 
         self.handler_input.response_builder.speak(speak_output)
         self.logger.info(speak_output)
+        return self.playback.start_playback(PlexConnector._section)
+
+    def play_similar_songs(self) -> Response:
+        self.logger.debug('In play_similar_songs()')
+
+        # get localization data
+        data = self.handler_input.attributes_manager.request_attributes["_"]
+
+        # Get variable(s) from intent
+        artist = get_slot_value_v2(self.handler_input, 'artist')
+        song = get_slot_value_v2(self.handler_input, 'song')
+        if artist is None or song is None:
+            speak_output = data[prompts.SKILL_INTENT_SLOTS_MISSING]
+            self.logger.error(speak_output)
+            return self.plex._build_speak_ask_response(speak_output)
+
+        artist_query = self.text._normalize(artist.value)
+        song_query = self.text._normalize(song.value)
+
+        # Search for the artist
+        try:
+            artist_result = self.plexapi.get_artist(PlexConnector._section, artist_query)
+        except Exception as exception:
+            speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist_query)
+            self.logger.error(exception)
+            return self.plex._build_speak_ask_response(speak_output)
+
+        if artist_result is None:
+            speak_output = data[prompts.PMS_ARTIST_SEARCH_EMPTY].format(artist_query)
+            self.logger.error(speak_output)
+            return self.plex._build_speak_ask_response(speak_output)
+
+        # Search for the song
+        try:
+            plex_track = self.plexapi.get_track(artist_result, song_query)
+        except Exception as exception:
+            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song_query, artist=artist_query)
+            self.logger.error(exception)
+            return self.plex._build_speak_ask_response(speak_output)
+
+
+        # Search for the similar songs
+        try:
+            plex_track_list = self.plexapi.get_nearby_tracks(PlexConnector._section._server, config.PMS_DEFAULT_MAX_RESULTS, plex_track)
+        except Exception as exception:
+            speak_output = data[prompts.PMS_SIMILAR_SEARCH_ERROR].format(song=song_query, artist=artist_query)
+            self.logger.error(exception)
+            return self.plex._build_speak_ask_response(speak_output)
+
+        self.logger.debug("track list length: " + str(len(plex_track_list)))
+        if len(plex_track_list)==0:
+            speak_output = data[prompts.PMS_SIMILAR_SEARCH_EMPTY].format(song=song_query, artist=artist_query)
+            self.logger.error(speak_output)
+            return self.plex._build_speak_ask_response(speak_output)
+
+        self.playlist.clear_playlist()
+        self.plex.add_plex_tracks(plex_track_list)
+
+        playlist_name = data[prompts.PMS_PLNAME_SIMILAR].format(song=song_query, artist=artist_query)
+        self.plex.set_playlist_name(playlist_name)
+        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+
+        self.handler_input.response_builder.speak(speak_output)
+        self.logger.info(speak_output)
+
         return self.playback.start_playback(PlexConnector._section)

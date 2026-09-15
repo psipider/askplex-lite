@@ -1,6 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
+      "invocationName": "plex stream",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -69,7 +70,6 @@
             "What is the name of the song",
             "What is the name of the song that is playing",
             "What is this",
-            "What is playing",
             "Who is this song by",
             "Who is the song by",
             "Who is singing this",
@@ -189,16 +189,21 @@
           ]
         },
         {
+          "name": "PlayPlaylist",
           "slots": [
             {
               "name": "playlist",
               "type": "playlist_names"
+            },
+            {
+              "name": "mode",
+              "type": "play_mode"
             }
           ],
-          "name": "PlayPlaylist",
           "samples": [
-            "Playlist {playlist}",
-            "Play the playlist {playlist}"
+            "{mode} {playlist} playlist",
+            "{mode} playlist {playlist}",
+            "{mode} the playlist {playlist}"
           ]
         },
         {
@@ -208,23 +213,116 @@
         {
           "name": "AMAZON.NoIntent",
           "samples": []
+        },
+        {
+          "name": "PlaySimilarSongs",
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "samples": [
+            "Create playlist from {song}",
+            "Play songs like {song}",
+            "Play songs like {song} by {artist}",
+            "Play songs similar to {song} by {artist}",
+            "Create playlist from the song {song} by {artist}",
+            "Create playlist from {song} by {artist}"
+          ]
         }
       ],
       "types": [
         {
+          "name": "playlist_names",
           "values": [
             {
               "name": {
-                "value": "Recently Added"
+                "value": "love songs"
               }
             },
             {
               "name": {
-                "value": "Recently Played"
+                "value": "film music",
+                "synonyms": [
+                  "movie scores",
+                  "movie themes",
+                  "movie music",
+                  "film scores"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "dance music"
+              }
+            },
+            {
+              "name": {
+                "value": "party 2025"
+              }
+            },
+            {
+              "name": {
+                "value": "top 10"
+              }
+            },
+            {
+              "name": {
+                "value": "top 40"
+              }
+            },
+            {
+              "name": {
+                "value": "summer 26",
+                "synonyms": [
+                  "summer2026",
+                  "summer26",
+                  "summer 2026"
+                ]
               }
             }
-          ],
-          "name": "playlist_names"
+          ]
+        },
+        {
+          "name": "play_mode",
+          "values": [
+            {
+              "name": {
+                "value": "play"
+              }
+            },
+            {
+              "name": {
+                "value": "shuffle"
+              }
+            }
+          ]
+        },
+        {
+          "name": "AMAZON.Artist",
+          "values": [
+            {
+              "name": {
+                "value": "The Rolling Stones",
+                "synonyms": [
+                  "Rolling Stones"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "The Beatles",
+                "synonyms": [
+                  "Beatles"
+                ]
+              }
+            }
+          ]
         }
       ]
     }

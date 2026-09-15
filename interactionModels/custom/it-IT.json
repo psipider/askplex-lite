@@ -1,6 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
+      "invocationName": "plex stream",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -86,13 +87,17 @@
           ]
         },
         {
+          "name": "PlayMusicByArtist",
           "slots": [
             {
               "name": "artist",
               "type": "AMAZON.Artist"
+            },
+            {
+              "name": "mode",
+              "type": "play_mode"
             }
           ],
-          "name": "PlayMusicByArtist",
           "samples": [
             "Riproduci {artist}",
             "Riproduci l'artista {artist}",
@@ -153,13 +158,17 @@
           ]
         },
         {
+          "name": "PlayMusicByGenre",
           "slots": [
             {
               "name": "genre",
               "type": "AMAZON.Genre"
+            },
+            {
+              "name": "mode",
+              "type": "play_mode"
             }
           ],
-          "name": "PlayMusicByGenre",
           "samples": [
             "Genere {genre}",
             "Musica {genre}",
@@ -171,13 +180,17 @@
           ]
         },
         {
+          "name": "PlayPlaylist",
           "slots": [
             {
               "name": "playlist",
               "type": "playlist_names"
+            },
+            {
+              "name": "mode",
+              "type": "play_mode"
             }
           ],
-          "name": "PlayPlaylist",
           "samples": [
             "Playlist {playlist}",
             "Riproduci la playlist {playlist}"
@@ -190,23 +203,116 @@
         {
           "name": "AMAZON.NoIntent",
           "samples": []
+        },
+        {
+          "name": "PlaySimilarSongs",
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "samples": [
+            "Crea playlist da {song}",
+            "Riproduci canzoni come {song}",
+            "Riproduci canzoni come {song} di {artist}",
+            "Riproduci canzoni simili a {song} di {artist}",
+            "Crea playlist dalla canzone {song} di {artist}",
+            "Crea playlist da {song} di {artist}"
+          ]
         }
       ],
       "types": [
         {
+          "name": "playlist_names",
           "values": [
             {
               "name": {
-                "value": "Recently Added"
+                "value": "love songs"
               }
             },
             {
               "name": {
-                "value": "Recently Played"
+                "value": "film music",
+                "synonyms": [
+                  "movie scores",
+                  "movie themes",
+                  "movie music",
+                  "film scores"
+                ]
+              }
+            },
+            {
+              "name": {
+value": "dance music"
+              }
+            },
+            {
+              "name": {
+                "value": "party 2025"
+              }
+            },
+            {
+              "name": {
+                "value": "top 10"
+              }
+            },
+            {
+              "name": {
+                "value": "top 40"
+              }
+            },
+            {
+              "name": {
+                "value": "summer 26",
+                "synonyms": [
+                  "summer2026",
+                  "summer26",
+                  "summer 2026"
+                ]
               }
             }
-          ],
-          "name": "playlist_names"
+          ]
+        },
+        {
+          "name": "play_mode",
+          "values": [
+            {
+              "name": {
+                "value": "play"
+              }
+            },
+            {
+              "name": {
+                "value": "shuffle"
+              }
+            }
+          ]
+        },
+        {
+          "name": "AMAZON.Artist",
+          "values": [
+            {
+              "name": {
+                "value": "The Rolling Stones",
+                "synonyms": [
+                  "Rolling Stones"
+                ]
+              }
+            },
+            {
+              "name": {
+                "value": "The Beatles",
+                "synonyms": [
+                  "Beatles"
+                ]
+              }
+            }
+          ]
         }
       ]
     }
