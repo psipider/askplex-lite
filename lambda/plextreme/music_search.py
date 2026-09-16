@@ -1,5 +1,4 @@
 import time
-from typing import Optional
 from logging import Logger
 
 from ask_sdk_model import Response

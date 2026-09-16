@@ -1,0 +1,18 @@
+# Testing dependencies for Plextreme Lambda
+# Install with: pip install -r requirements-test.txt
+
+# Core testing framework
+unittest-xml-reporting==3.2.0
+
+# Mocking utilities
+pytest==7.4.3
+pytest-mock==3.12.0
+
+# Code coverage
+pytest-cov==4.1.0
+
+# Async testing (if needed for future)
+pytest-asyncio==0.21.1
+
+# HTTP request mocking (useful for Plex API testing)
+responses==0.23.3

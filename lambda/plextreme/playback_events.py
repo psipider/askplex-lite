@@ -1,4 +1,3 @@
-from typing import Dict
 from logging import Logger
 
 from ask_sdk_model import Response
