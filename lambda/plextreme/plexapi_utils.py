@@ -4,15 +4,12 @@ import time
 from logging import Logger
 from typing import Optional, List
 
-from plexapi import exceptions
 from plexapi.library import MusicSection
 from plexapi.server import PlexServer
 from plexapi.audio import Artist, Track, Album
 from plexapi.exceptions import NotFound
 from plexapi.playlist import Playlist
-from plexapi.playqueue import PlayQueue
 
-from askplex import text_utils
 from .text_utils import TextUtils
 
 
@@ -49,17 +46,17 @@ class PlexApiUtils:
 
         # searchArtists(title) is the quickest method by far so try that with both name variants first
         timer = time.time()
-        matches = section.searchArtists(title=original_name)
+        matches = section.searchArtists(**{"title=": original_name})
         self.logger.debug(f"Timer - title search on '{original_name}': " + str(time.time() - timer))
         if matches:
-            self.logger.debug(f"Found artist with exact title match: '{original_name}'")
+            self.logger.debug(f"Found artist with exact title match using {original_name}: '{matches}'")
             return matches[0]
 
         timer = time.time()
-        matches = section.searchArtists(title=normalized_name)
+        matches = section.searchArtists(**{"title=": normalized_name})
         self.logger.debug(f"Timer - title search on '{normalized_name}': " + str(time.time() - timer))
         if matches:
-            self.logger.debug(f"Found artist with exact title match: '{normalized_name}'")
+            self.logger.debug(f"Found artist with exact title match using {normalized_name}: '{matches[0]}'")
             return matches[0]
 
         # If searchArtists(title fails, try searchArtists(title__icontains)
@@ -255,8 +252,19 @@ class PlexApiUtils:
         Returns:
             List[Artist]: The retrieved tracks.
         """
-        return section.search(libtype='track', sort='random', maxresults=maxresult, filters={'genre': genre})
-        # section.searchTracks(sort='random', maxresults=maxresult, style=genre))
+        self.logger.debug(f"Searching for tracks by genre '{genre}' using section.search")
+        tracks =  section.search(libtype='track', sort='random', maxresults=maxresult, filters={'genre': genre})
+        if tracks is not None:
+            self.logger.debug(f"Tracks found for genre '{genre}' using section.search")
+            return tracks
+
+        self.logger.debug(f"Searching for tracks by genre '{genre}' using section.searchTracks")
+        tracks =  section.searchTracks(sort='random', maxresults=maxresult, style=genre)
+        if tracks is not None:
+            self.logger.debug(f"Tracks found for genre '{genre}' using section.searchTracks")
+            return tracks
+
+        return None
 
     def get_nearby_tracks(self, server: PlexServer, maxresult: int, track: Track) -> List[Track]:
         return self.get_similar_tracks_by_metadata(server, track, maxresult)

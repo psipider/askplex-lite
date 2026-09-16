@@ -14,9 +14,9 @@ from ask_sdk_core.api_client import DefaultApiClient
 from ask_sdk_model import Response
 from ask_sdk_dynamodb.adapter import DynamoDbAdapter
 
-from askplex import config
-from askplex import prompts
-from askplex import controller
+from plextreme import config
+from plextreme import prompts
+from plextreme import controller
 
 
 # Setup Logging
@@ -35,7 +35,7 @@ dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=False
 
 DYNAMODB_SCHEMA = 0
 
-logger.info('Starting AskPlex...')
+logger.info('Starting Plexstreme...')
 
 
 #
@@ -839,7 +839,7 @@ class LocalizationInterceptor(AbstractRequestInterceptor):
         logger.info("Locale is: {}".format(locale))
         
         # localized strings stored in language_strings.json
-        with open("askplex/language_strings.json") as language_prompts:
+        with open("plextreme/language_strings.json") as language_prompts:
             language_data = json.load(language_prompts)
         # set default translation data to broader translation
         
@@ -977,4 +977,4 @@ sb.add_global_response_interceptor(SavePersistenceAttributesResponseInterceptor(
 
 
 lambda_handler = sb.lambda_handler()
-logger.info('AskPlex Ready!')
+logger.info('Plexstreme Ready!')

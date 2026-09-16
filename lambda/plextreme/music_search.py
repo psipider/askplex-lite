@@ -105,8 +105,9 @@ class MusicSearch:
             speak_output = data[prompts.SKILL_INTENT_SLOTS_MISSING]
             self.logger.error(speak_output)
             return self.plex._build_speak_ask_response(speak_output)
-        
-        artist_query = self.text._normalize(artist.value)
+
+        #artist_query = self.text._normalize(artist.value)
+        artist_query = self.text._normalize(artist.resolutions.resolutions_per_authority[0].values[0].value.name)
         # Search for the artist
         try:
             artist_result = self.plexapi.get_artist(PlexConnector._section, artist_query)
@@ -196,7 +197,7 @@ class MusicSearch:
         # Search for the song
         plex_track = self.plexapi.get_track_by_artist(artist_result, song_query)
         if plex_track is None:
-            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song_query, artist=artist_result.title)
+            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song_query, artist=artist_query)
             self.logger.error(speak_output)
             return self.plex._build_speak_ask_response(speak_output)
 
@@ -205,7 +206,7 @@ class MusicSearch:
         self.playlist.clear_playlist()
         self.plex.add_plex_track(plex_track)
 
-        playlist_name = data[prompts.PMS_PLNAME_SONG].format(song=plex_track.title, artist=artist_result.title)
+        playlist_name = data[prompts.PMS_PLNAME_SONG].format(song=plex_track.title, artist=artist_query)
         self.plex.set_playlist_name(playlist_name)
         speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
 
@@ -298,7 +299,8 @@ class MusicSearch:
             self.logger.error(speak_output)
             return self.plex._build_speak_ask_response(speak_output)
 
-        genre_query = self.text._normalize(genre.value)
+        # genre_query = self.text._normalize(genre.value)
+        genre_query = self.text._normalize(genre.resolutions.resolutions_per_authority[0].values[0].value.name)
 
         # Search for the style (Plex server is more specfic with style than genre tags)
         try:

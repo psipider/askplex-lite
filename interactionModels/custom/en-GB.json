@@ -1,7 +1,6 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "plex stream",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -17,14 +16,6 @@
         },
         {
           "name": "AMAZON.NavigateHomeIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.PauseIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.ResumeIntent",
           "samples": []
         },
         {
@@ -60,8 +51,8 @@
           "samples": []
         },
         {
-          "name": "PlaybackSongDetails",
           "slots": [],
+          "name": "PlaybackSongDetails",
           "samples": [
             "What is playing",
             "What song is this",
@@ -70,7 +61,6 @@
             "What is the name of the song",
             "What is the name of the song that is playing",
             "What is this",
-            "What is playing",
             "Who is this song by",
             "Who is the song by",
             "Who is singing this",
@@ -78,8 +68,8 @@
           ]
         },
         {
-          "name": "PlayRandomMusic",
           "slots": [],
+          "name": "PlayRandomMusic",
           "samples": [
             "Play some music",
             "Play random music",
@@ -88,17 +78,17 @@
           ]
         },
         {
-          "name": "PlayMusicByArtist",
           "slots": [
             {
               "name": "artist",
-              "type": "AMAZON.Artist"
+              "type": "AMAZON.MusicGroup"
             },
             {
               "name": "mode",
               "type": "play_mode"
             }
           ],
+          "name": "PlayMusicByArtist",
           "samples": [
             "{mode} songs by {artist}",
             "{mode} music by {artist}",
@@ -121,7 +111,6 @@
           ]
         },
         {
-          "name": "PlaySongByArtist",
           "slots": [
             {
               "name": "song",
@@ -129,9 +118,10 @@
             },
             {
               "name": "artist",
-              "type": "AMAZON.Artist"
+              "type": "AMAZON.MusicGroup"
             }
           ],
+          "name": "PlaySongByArtist",
           "samples": [
             "Play {song} by {artist}",
             "Play the song {song} by {artist}",
@@ -145,7 +135,6 @@
           ]
         },
         {
-          "name": "PlayAlbumByArtist",
           "slots": [
             {
               "name": "album",
@@ -153,9 +142,10 @@
             },
             {
               "name": "artist",
-              "type": "AMAZON.Artist"
+              "type": "AMAZON.MusicGroup"
             }
           ],
+          "name": "PlayAlbumByArtist",
           "samples": [
             "Play album {album} by {artist}",
             "Play the album {album} by {artist}",
@@ -169,18 +159,19 @@
           ]
         },
         {
-          "name": "PlayMusicByGenre",
           "slots": [
             {
               "name": "genre",
-              "type": "AMAZON.Genre"
+              "type": "plex_genre"
             },
             {
               "name": "mode",
               "type": "play_mode"
             }
           ],
+          "name": "PlayMusicByGenre",
           "samples": [
+            "{mode} music of the {genre} genre",
             "{mode} {genre} music",
             "{mode} music from the {genre} genre",
             "{mode} {genre} genre music",
@@ -190,7 +181,6 @@
           ]
         },
         {
-          "name": "PlayPlaylist",
           "slots": [
             {
               "name": "playlist",
@@ -201,6 +191,7 @@
               "type": "play_mode"
             }
           ],
+          "name": "PlayPlaylist",
           "samples": [
             "{mode} the playlist {playlist}",
             "{mode} playlist {playlist}"
@@ -215,7 +206,6 @@
           "samples": []
         },
         {
-          "name": "PlaySimilarSongs",
           "slots": [
             {
               "name": "song",
@@ -223,9 +213,10 @@
             },
             {
               "name": "artist",
-              "type": "AMAZON.Artist"
+              "type": "AMAZON.MusicGroup"
             }
           ],
+          "name": "PlaySimilarSongs",
           "samples": [
             "Create playlist from {song}",
             "Play songs like {song}",
@@ -234,11 +225,18 @@
             "Create playlist from the song {song} by {artist}",
             "Create playlist from {song} by {artist}"
           ]
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
         }
       ],
       "types": [
         {
-          "name": "playlist_names",
           "values": [
             {
               "name": {
@@ -247,13 +245,13 @@
             },
             {
               "name": {
-                "value": "film music",
                 "synonyms": [
                   "movie scores",
                   "movie themes",
                   "movie music",
                   "film scores"
-                ]
+                ],
+                "value": "film music"
               }
             },
             {
@@ -278,18 +276,18 @@
             },
             {
               "name": {
-                "value": "summer 26",
                 "synonyms": [
                   "summer2026",
                   "summer26",
                   "summer 2026"
-                ]
+                ],
+                "value": "summer 26"
               }
             }
-          ]
+          ],
+          "name": "playlist_names"
         },
         {
-          "name": "play_mode",
           "values": [
             {
               "name": {
@@ -301,30 +299,113 @@
                 "value": "shuffle"
               }
             }
-          ]
+          ],
+          "name": "play_mode"
         },
         {
-          "name": "AMAZON.Artist",
           "values": [
             {
               "name": {
-                "value": "The Rolling Stones",
                 "synonyms": [
-                  "Rolling Stones"
-                ]
+                  "Screen",
+                  "Movies",
+                  "Musicals",
+                  "Stage",
+                  "Stage \u0026 Screen"
+                ],
+                "value": "Stage and Screen"
               }
             },
             {
               "name": {
-                "value": "The Beatles",
+                "value": "New Age"
+              }
+            },
+            {
+              "name": {
+                "value": "Reggae"
+              }
+            },
+            {
+              "name": {
+                "value": "Easy Listening"
+              }
+            },
+            {
+              "name": {
+                "value": "Soundtracks"
+              }
+            },
+            {
+              "name": {
+                "value": "Classical"
+              }
+            },
+            {
+              "name": {
+                "value": "Country"
+              }
+            },
+            {
+              "name": {
+                "value": "Blues"
+              }
+            },
+            {
+              "name": {
+                "value": "Jazz"
+              }
+            },
+            {
+              "name": {
                 "synonyms": [
-                  "Beatles"
-                ]
+                  "RnB",
+                  "R\u0026B",
+                  "R and B"
+                ],
+                "value": "Soul"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "Hip Hop"
+                ],
+                "value": "Rap"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "Electronica"
+                ],
+                "value": "Electronic"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "World"
+                ],
+                "value": "Folk"
+              }
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "Pop slash rock",
+                  "Pop Rock",
+                  "Rock",
+                  "Pop"
+                ],
+                "value": "Pop/Rock"
               }
             }
-          ]
+          ],
+          "name": "plex_genre"
         }
-      ]
+      ],
+      "invocationName": "plex stream"
     }
   }
 }

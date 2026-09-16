@@ -1,7 +1,6 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "plex stream",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -17,14 +16,6 @@
         },
         {
           "name": "AMAZON.NavigateHomeIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.PauseIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.ResumeIntent",
           "samples": []
         },
         {
@@ -80,7 +71,6 @@
           "slots": [],
           "name": "PlayRandomMusic",
           "samples": [
-            "Play music",
             "Play some music",
             "Play random music",
             "Play random songs",
@@ -100,6 +90,8 @@
           ],
           "name": "PlayMusicByArtist",
           "samples": [
+            "{mode} songs by {artist}",
+            "{mode} music by {artist}",
             "{mode} {artist}",
             "{mode} the artist {artist}",
             "{mode} the singer {artist}",
@@ -131,7 +123,6 @@
           ],
           "name": "PlaySongByArtist",
           "samples": [
-            "Song {song} by {artist}",
             "Play {song} by {artist}",
             "Play the song {song} by {artist}",
             "Play the song {song} by artist {artist}",
@@ -156,8 +147,7 @@
           ],
           "name": "PlayAlbumByArtist",
           "samples": [
-            "Song {album} by {artist}",
-            "Play {album} by {artist}",
+            "Play album {album} by {artist}",
             "Play the album {album} by {artist}",
             "Play the album {album} by artist {artist}",
             "Play the album {album} by singer {artist}",
@@ -181,15 +171,15 @@
           ],
           "name": "PlayMusicByGenre",
           "samples": [
-            "{mode} songs from the genre {genre}",
-            "{mode} genre {genre}",
-            "{mode} music {genre}",
-            "{mode} music from the genre {genre}",
-            "{mode} music from the {genre} genre"
+            "{mode} {genre} music",
+            "{mode} music from the {genre} genre",
+            "{mode} {genre} genre music",
+            "{mode} Genre {genre}",
+            "Music from the genre {genre}",
+            "{mode} songs from the genre {genre}"
           ]
         },
         {
-          "name": "PlayPlaylist",
           "slots": [
             {
               "name": "playlist",
@@ -200,10 +190,10 @@
               "type": "play_mode"
             }
           ],
+          "name": "PlayPlaylist",
           "samples": [
-            "{mode} {playlist} playlist",
-            "{mode} playlist {playlist}",
-            "{mode} the playlist {playlist}"
+            "{mode} the playlist {playlist}",
+            "{mode} playlist {playlist}"
           ]
         },
         {
@@ -215,7 +205,6 @@
           "samples": []
         },
         {
-          "name": "PlaySimilarSongs",
           "slots": [
             {
               "name": "song",
@@ -226,6 +215,7 @@
               "type": "AMAZON.Artist"
             }
           ],
+          "name": "PlaySimilarSongs",
           "samples": [
             "Create playlist from {song}",
             "Play songs like {song}",
@@ -234,11 +224,18 @@
             "Create playlist from the song {song} by {artist}",
             "Create playlist from {song} by {artist}"
           ]
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
         }
       ],
       "types": [
         {
-          "name": "playlist_names",
           "values": [
             {
               "name": {
@@ -247,13 +244,13 @@
             },
             {
               "name": {
-                "value": "film music",
                 "synonyms": [
                   "movie scores",
                   "movie themes",
                   "movie music",
                   "film scores"
-                ]
+                ],
+                "value": "film music"
               }
             },
             {
@@ -278,18 +275,18 @@
             },
             {
               "name": {
-                "value": "summer 26",
                 "synonyms": [
                   "summer2026",
                   "summer26",
                   "summer 2026"
-                ]
+                ],
+                "value": "summer 26"
               }
             }
-          ]
+          ],
+          "name": "playlist_names"
         },
         {
-          "name": "play_mode",
           "values": [
             {
               "name": {
@@ -301,30 +298,32 @@
                 "value": "shuffle"
               }
             }
-          ]
+          ],
+          "name": "play_mode"
         },
         {
-          "name": "AMAZON.Artist",
           "values": [
             {
               "name": {
-                "value": "The Rolling Stones",
                 "synonyms": [
                   "Rolling Stones"
-                ]
+                ],
+                "value": "The Rolling Stones"
               }
             },
             {
               "name": {
-                "value": "The Beatles",
                 "synonyms": [
                   "Beatles"
-                ]
+                ],
+                "value": "The Beatles"
               }
             }
-          ]
+          ],
+          "name": "AMAZON.Artist"
         }
-      ]
+      ],
+      "invocationName": "plex stream"
     }
   }
 }

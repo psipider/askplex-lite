@@ -3,7 +3,7 @@
     "apis": {
       "custom": {
         "endpoint": {
-          "uri": "arn:aws:lambda:eu-west-1:961190089475:function:b3fdeb5d-07d1-47f5-a556-0ed88bdd0af7:Release_0"
+          "uri": "arn:aws:lambda:eu-west-1:961190089475:function:7d41fde1-ef2f-4494-a87c-b1eeecfcb589:Release_0"
         },
         "interfaces": [
           {
@@ -12,19 +12,19 @@
         ],
         "locales": {},
         "regions": {
-          "NA": {
-            "endpoint": {
-              "uri": "arn:aws:lambda:us-east-1:961190089475:function:b3fdeb5d-07d1-47f5-a556-0ed88bdd0af7:Release_0"
-            }
-          },
           "EU": {
             "endpoint": {
-              "uri": "arn:aws:lambda:eu-west-1:961190089475:function:b3fdeb5d-07d1-47f5-a556-0ed88bdd0af7:Release_0"
+              "uri": "arn:aws:lambda:eu-west-1:961190089475:function:7d41fde1-ef2f-4494-a87c-b1eeecfcb589:Release_0"
+            }
+          },
+          "NA": {
+            "endpoint": {
+              "uri": "arn:aws:lambda:us-east-1:961190089475:function:7d41fde1-ef2f-4494-a87c-b1eeecfcb589:Release_0"
             }
           },
           "FE": {
             "endpoint": {
-              "uri": "arn:aws:lambda:us-west-2:961190089475:function:b3fdeb5d-07d1-47f5-a556-0ed88bdd0af7:Release_0"
+              "uri": "arn:aws:lambda:us-west-2:961190089475:function:7d41fde1-ef2f-4494-a87c-b1eeecfcb589:Release_0"
             }
           }
         }
@@ -32,18 +32,69 @@
     },
     "manifestVersion": "1.0",
     "publishingInformation": {
+      "automaticClonedLocale": {
+        "locales": [
+          {
+            "source": "en-GB"
+          }
+        ]
+      },
       "distributionCountries": [],
       "isAvailableWorldwide": true,
       "locales": {
-        "en-GB": {
-          "description": "AskPlex is an Alexa skill which allows you to play music hosted by your plex media server",
+        "en-CA": {
+          "description": "Plextreme is an Alexa skill which allows you to play music hosted by your plex media server",
           "examplePhrases": [
-            "Alexa open askPlex",
-            "Alexa ask AskPlex to play some music",
-            "Alexa ask AskPlex to play rock music"
+            "Alexa open Plextreme",
+            "Alexa ask Plextreme to play some music",
+            "Alexa ask Plextreme to play rock music"
           ],
           "keywords": [],
-          "name": "AskPlex-Lite",
+          "name": "Plextreme",
+          "summary": "Skill for playing music from your media server"
+        },
+        "en-US": {
+          "description": "Plextreme is an Alexa skill which allows you to play music hosted by your plex media server",
+          "examplePhrases": [
+            "Alexa open Plextreme",
+            "Alexa ask Plextreme to play some music",
+            "Alexa ask Plextreme to play rock music"
+          ],
+          "keywords": [],
+          "name": "Plextreme",
+          "summary": "Skill for playing music from your media server"
+        },
+        "en-IN": {
+          "description": "Plextreme is an Alexa skill which allows you to play music hosted by your plex media server",
+          "examplePhrases": [
+            "Alexa open Plextreme",
+            "Alexa ask Plextreme to play some music",
+            "Alexa ask Plextreme to play rock music"
+          ],
+          "keywords": [],
+          "name": "Plextreme",
+          "summary": "Skill for playing music from your media server"
+        },
+        "en-AU": {
+          "description": "Plextreme is an Alexa skill which allows you to play music hosted by your plex media server",
+          "examplePhrases": [
+            "Alexa open Plextreme",
+            "Alexa ask Plextreme to play some music",
+            "Alexa ask Plextreme to play rock music"
+          ],
+          "keywords": [],
+          "name": "Plextreme",
+          "summary": "Skill for playing music from your media server"
+        },
+        "en-GB": {
+          "description": "Plextreme is an Alexa skill which allows you to play music hosted by your plex media server",
+          "examplePhrases": [
+            "Alexa open Plextreme",
+            "Alexa ask Plextreme to play some music",
+            "Alexa ask Plextreme to play rock music"
+          ],
+          "keywords": [],
+          "name": "Plextreme",
           "summary": "Skill for playing music from your media server"
         }
       }
